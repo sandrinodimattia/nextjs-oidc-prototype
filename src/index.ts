@@ -1,6 +1,6 @@
 import Iron from '@hapi/iron';
 import { parseCookies } from 'nookies';
-import { NextPageContext } from 'next';
+import { IncomingMessage } from 'http';
 
 import Login from './login';
 import Logout from './logout';
@@ -20,7 +20,11 @@ export default function (settings: IOidcSettings) {
     handleLogin: Login(clientProvider, settings),
     handleLogout: Logout(settings),
     handleCallback: Callback(clientProvider, settings),
-    getSession: async (ctx: NextPageContext): Promise<any> => {
+    getSession: async (req: IncomingMessage): Promise<any> => {
+      const ctx: any = {
+        req
+      };
+
       const cookies = parseCookies(ctx);
       if (!cookies['oidc:session']) {
         return null;

@@ -1,27 +1,61 @@
 
+import fetch from 'node-fetch';
 import React, { Component } from 'react';
-import { getSession } from '../utils/oidc';
 
 export default class Home extends Component {
-  static async getInitialProps (ctx) {
-    if (ctx.req) {
-      return {
-        session: await getSession(ctx)
-      }
+  constructor() {
+    super();
+    this.state = { };
+  }
+
+  async componentDidMount() {
+    const res = await fetch('/api/me');
+    if (res.ok) {
+      this.setState({
+        session: await res.json()
+      })
     }
   }
 
-  renderUser() {
-    console.log(this.props.session);
-    if (!this.props.session) {
+  renderLogin() {
+    if (this.state.session) {
       return <div />;
     }
 
+    return <a href={"/login"}>
+      <button>Login</button>
+    </a>;
+  }
+
+  renderLogout() {
+    if (!this.state.session) {
+      return <div />;
+    }
+    return  <a href={"/logout"}>
+      <button>Logout</button>
+    </a>;
+  }
+
+  renderProfilePage() {
+    if (!this.state.session) {
+      return <div />;
+    }
+    return  <a href={"/profile"}>
+      <button>Profile Page</button>
+    </a>;
+  }
+
+  renderUser() {
+    if (!this.state.session) {
+      return <div />;
+    }
+  
     return <div>
-      <p>Subject: {this.props.session.sub}</p>
-      <p>Email: {this.props.session.email}</p>
-      <p>Name: {this.props.session.name}</p>
-      <p>Access Token: {this.props.session.accessToken}</p>
+      <h3>Rendered on the client</h3>
+      <p>Subject: {this.state.session.sub}</p>
+      <p>Email: {this.state.session.email}</p>
+      <p>Name: {this.state.session.name}</p>
+      <p>Access Token: {this.state.session.accessToken}</p>
     </div>
   }
 
@@ -29,12 +63,9 @@ export default class Home extends Component {
     return (
       <div>
         <p>Hello Next.js</p>
-        <a href={"/login"}>
-          <button>Login</button>
-        </a>
-        <a href={"/logout"}>
-          <button>Logout</button>
-        </a>
+        {this.renderLogin()}
+        {this.renderLogout()}
+        {this.renderProfilePage()}
         {this.renderUser()}
       </div>
     )

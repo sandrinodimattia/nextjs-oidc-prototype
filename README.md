@@ -69,17 +69,17 @@ Now create the necessary buttons in your application. Make sure to use `<a>` ins
   </a>
 ```
 
-And finally you can now read the session when necessary and use it when rendering pages on the server of when you want to expose API endpoints:
+And finally you can now read the session when necessary and use it when rendering pages on the server:
 
 ```js
 import React, { Component } from 'react';
 import { getSession } from '../utils/oidc';
 
 export default class Home extends Component {
- static async getInitialProps (ctx) {
-    if (ctx.req) {
+ static async getInitialProps ({ req }) {
+    if (req) {
       return {
-        session: await getSession(ctx)
+        session: await getSession(req)
       }
     }
   }
@@ -97,4 +97,28 @@ export default class Home extends Component {
       <p>Access Token: {this.props.session.accessToken}</p>
     </div>
   }
+```
+
+If you're caching pages on the server side and you want to render the dynamic content on the client side you can make use of API Routes:
+
+```js
+import { getSession } from '../../utils/oidc';
+
+export default async function handle(req, res) {
+  const session = await getSession(req);
+  res.json(session);
+}
+```
+
+These can then be called on the client side to update the page:
+
+```js
+async componentDidMount() {
+  const res = await fetch('/api/me');
+  if (res.ok) {
+    this.setState({
+      session: await res.json()
+    })
+  }
+}
 ```
