@@ -1,0 +1,52 @@
+{
+  "name": "@auth0/nextjs-oidc",
+  "version": "0.1.0",
+  "private": true,
+  "description": "OpenID Connect support for Next.js",
+  "keywords": [
+    "auth0",
+    "next.js",
+    "ssr",
+    "oidc"
+  ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "lib"
+  ],
+  "scripts": {
+    "clean": "rimraf dist",
+    "pretty": "prettier --write \"src/**/*.ts\" \"src/*.ts\"",
+    "lint": "eslint --fix --ext .ts ./src",
+    "build": "tsc -p tsconfig.build.json"
+  },
+  "author": "Sandrino Di Mattia",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/next": "^8.0.6",
+    "@types/react-dom": "^16.9.0",
+    "@typescript-eslint/eslint-plugin": "^2.0.0",
+    "@typescript-eslint/parser": "^2.0.0",
+    "eslint": "^6.2.1",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-config-prettier": "^6.1.0",
+    "eslint-import-resolver-typescript": "^1.1.1",
+    "eslint-plugin-import": "^2.18.2",
+    "jest": "^24.9.0",
+    "rimraf": "^3.0.0",
+    "ts-node": "^8.3.0",
+    "typescript": "^3.5.3"
+  },
+  "dependencies": {
+    "@types/cookie": "^0.3.3",
+    "@types/node": "^12.7.2",
+    "@types/openid-client": "^3.1.5",
+    "@types/react": "^16.9.2",
+    "next": "^9.0.4",
+    "nookies": "^2.0.8",
+    "openid-client": "^3.5.0",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0"
+  }
+}
