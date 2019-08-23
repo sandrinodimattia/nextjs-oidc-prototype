@@ -1,9 +1,11 @@
 module.exports = {
   webpack: (config, { isServer }) => {
-    // Fixes npm packages that depend on `fs` module
+    // Fixes npm packages that depend on Node.js module
     if (!isServer) {
       config.node = {
-        fs: 'empty'
+        fs: 'empty',
+        net: 'empty',
+        tls: 'empty'
       }
     }
 

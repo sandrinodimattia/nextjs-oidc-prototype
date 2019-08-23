@@ -1,4 +1,4 @@
-export interface OidcSettings {
+export default interface IOidcSettings {
   domain: string;
   clientId: string;
   clientSecret: string;
@@ -6,4 +6,9 @@ export interface OidcSettings {
   postLogooutRedirectUri: string;
   scope: string;
   audience?: string;
+  session: IOidcSessionSettings;
+}
+
+export interface IOidcSessionSettings {
+  cookieSecret: string;
 }
