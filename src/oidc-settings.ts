@@ -3,6 +3,7 @@ export interface OidcSettings {
   clientId: string;
   clientSecret: string;
   redirectUri: string;
+  postLogooutRedirectUri: string;
   scope: string;
   audience?: string;
 }
