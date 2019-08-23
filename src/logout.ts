@@ -1,5 +1,5 @@
-import { NextPageContext } from 'next';
 import { parseCookies, destroyCookie } from 'nookies';
+import { IncomingMessage, ServerResponse } from 'http';
 
 import IOidcSettings from './oidc-settings';
 
@@ -11,21 +11,24 @@ function createLogoutUrl(settings: IOidcSettings) {
 }
 
 export default function logout(settings: IOidcSettings) {
-  return (ctx: NextPageContext) => {
-    if (!ctx.res) {
+  return async (req: IncomingMessage, res: ServerResponse) => {
+    if (!res) {
       throw new Error('Response is not available');
     }
 
     // Set the state in the cookie.
-    const nextContext: any = ctx;
+    const nextContext: any = {
+      req,
+      res
+    };
     parseCookies(nextContext);
     destroyCookie(nextContext, 'oidc:state');
     destroyCookie(nextContext, 'oidc:session');
 
     // Redirect to the authorize endpoint.
-    ctx.res.writeHead(302, {
+    res.writeHead(302, {
       Location: createLogoutUrl(settings)
-    });      
-    ctx.res.end();
+    });
+    res.end();
   };
 }

@@ -31,9 +31,14 @@ export default class Home extends Component {
     if (!this.state.session) {
       return <div />;
     }
-    return  <a href={"/logout"}>
-      <button>Logout</button>
-    </a>;
+    return  <div>
+      <a href={"/logout"}>
+        <button>Logout</button>
+      </a>
+      <a href={"/api/logout"}>
+        <button>Logout (API Route)</button>
+      </a>
+    </div>;
   }
 
   renderProfilePage() {

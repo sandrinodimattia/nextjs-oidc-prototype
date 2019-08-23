@@ -4,9 +4,9 @@ import React, { Component } from 'react';
 import { handleLogin } from '../utils/oidc';
 
 export default class Login extends Component {
-  static async getInitialProps (ctx) {
-    if (ctx.res) {
-      await handleLogin(ctx);
+  static async getInitialProps ({ req, res }) {
+    if (res) {
+      await handleLogin(req, res);
     }
   }
 

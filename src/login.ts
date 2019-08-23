@@ -1,18 +1,18 @@
 import base64url from 'base64url';
 import { randomBytes } from 'crypto';
-import { NextPageContext } from 'next';
 import { parseCookies, setCookie } from 'nookies';
+import { IncomingMessage, ServerResponse } from 'http';
 
 import IOidcSettings from './oidc-settings';
 import { IOidcClientProvider } from 'oidc-client-provider';
 
 export default function login(clientProvider: IOidcClientProvider, settings: IOidcSettings) {
-  return async (ctx: NextPageContext) => {
-    if (!ctx.res) {
+  return async (req: IncomingMessage, res: ServerResponse) => {
+    if (!res) {
       throw new Error('Response is not available');
     }
 
-    // Generate the state?
+    // Generate the state
     const state = base64url(randomBytes(48));
 
     // Create the authorization url.
@@ -24,7 +24,10 @@ export default function login(clientProvider: IOidcClientProvider, settings: IOi
     });
 
     // Set the state in the cookie.
-    const nextContext: any = ctx;
+    const nextContext: any = {
+      req,
+      res
+    };
     parseCookies(nextContext);
     setCookie(nextContext, 'oidc:state', state, {
       maxAge: 60 * 60,
@@ -32,9 +35,9 @@ export default function login(clientProvider: IOidcClientProvider, settings: IOi
     })
 
     // Redirect to the authorize endpoint.
-    ctx.res.writeHead(302, {
+    res.writeHead(302, {
       Location: `${authorizationUrl}&state=${state}`
-    });      
-    ctx.res.end();
+    });
+    res.end();
   };
 }
