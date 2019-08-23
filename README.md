@@ -1,6 +1,7 @@
 # OpenID Connect for Next.js
 
 ```
+npm install
 npm run build
 ```
 
@@ -8,8 +9,11 @@ Then to run the demo:
 
 ```
 cd examples/nextjs-auth-demo
+npm install
 npm run dev
 ```
+
+Note: This project currently contains the credentials of my test tenant in Auth0.
 
 ## How it works
 
