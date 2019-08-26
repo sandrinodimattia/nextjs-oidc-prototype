@@ -1,4 +1,4 @@
-import { parseCookies, destroyCookie } from 'nookies';
+import { serialize } from 'cookie'
 import { IncomingMessage, ServerResponse } from 'http';
 
 import IOidcSettings from './oidc-settings';
@@ -11,19 +11,16 @@ function createLogoutUrl(settings: IOidcSettings) {
 }
 
 export default function logout(settings: IOidcSettings) {
-  return async (req: IncomingMessage, res: ServerResponse) => {
+  return async (_req: IncomingMessage, res: ServerResponse) => {
     if (!res) {
       throw new Error('Response is not available');
     }
 
-    // Set the state in the cookie.
-    const nextContext: any = {
-      req,
-      res
-    };
-    parseCookies(nextContext);
-    destroyCookie(nextContext, 'oidc:state');
-    destroyCookie(nextContext, 'oidc:session');
+    // Remove the cookies
+    res.setHeader('Set-Cookie', [
+      serialize('oidc:state', '', { maxAge: -1, path: '/' }),
+      serialize('oidc:session', '', { maxAge: -1, path: '/' })
+    ])
 
     // Redirect to the authorize endpoint.
     res.writeHead(302, {

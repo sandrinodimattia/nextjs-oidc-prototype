@@ -1,6 +1,7 @@
 import Iron from '@hapi/iron';
-import { parseCookies, setCookie } from 'nookies';
+import { serialize } from 'cookie'
 import { IncomingMessage, ServerResponse } from 'http';
+import { parseCookies } from './cookies';
 
 import IOidcSettings from './oidc-settings';
 import { IOidcClientProvider } from './oidc-client-provider';
@@ -19,12 +20,8 @@ export default function callback(clientProvider: IOidcClientProvider, settings: 
       throw new Error('Url is not available');
     }
 
-    // Parste the cookies.
-    const nextContext: any = {
-      req,
-      res
-    };
-    const cookies = parseCookies(nextContext);
+    // Parse the cookies.
+    const cookies = parseCookies(req);
 
     // Require that we have a state.
     const state = cookies['oidc:state'];
@@ -48,10 +45,10 @@ export default function callback(clientProvider: IOidcClientProvider, settings: 
 
     // Create the session.
     const sealed = await Iron.seal(session, settings.session.cookieSecret, Iron.defaults);
-    setCookie(nextContext, 'oidc:session', sealed, {
+    res.setHeader('Set-Cookie', serialize('oidc:session', sealed, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production'
-    });
+    }))
 
     // Redirect to the homepage.
     res.writeHead(302, {
