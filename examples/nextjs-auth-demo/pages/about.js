@@ -9,11 +9,9 @@ export default function Home() {
     <Layout user={user}>
       <h1>Auth0 example</h1>
       <p>
-        To test the login with click in <i>Login</i>
-      </p>
-      <p>
-        Once you have logged in you should be able to click in <i>Profile</i> and{' '}
-        <i>Logout</i>
+        This is the about page, navigations between this page and <i>Home</i> are
+        always pretty fast, <i>Profile</i> takes more time because it uses SSR to
+        fetch the user first
       </p>
     </Layout>
   )
