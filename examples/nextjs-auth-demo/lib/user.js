@@ -7,13 +7,10 @@ const User = React.createContext()
 let userState
 
 const fetchUser = async () => {
-  if (!userState) {
-    const res = await fetch('/api/me')
+  const res = await fetch('/api/me')
 
-    if (res.ok) {
-      userState = { session: await res.json() }
-      return userState
-    }
+  if (res.ok) {
+    return { session: await res.json() }
   }
 }
 
@@ -24,13 +21,26 @@ export function UserProvider ({ user, children }) {
 export const useUser = () => React.useContext(User)
 
 export const useFetchUser = () => {
-  const [user, setUser] = React.useState(userState)
+  const [user, setUser] = React.useState(userState || null)
 
   React.useEffect(() => {
+    if (userState !== undefined) return
+
+    let isMounted = true
+
     fetchUser().then(data => {
-      setUser(data)
+      userState = data || null
+
+      // Only set the user if the component is still mounted
+      if (isMounted && data) {
+        setUser(data)
+      }
     })
-  }, [setUser])
+
+    return () => {
+      isMounted = false
+    }
+  }, [userState])
 
   return user
 }
