@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { useUser } from '../lib/user'
 
 const Header = () => {
-  const user = useUser()
+  const { user, loading } = useUser()
 
   return (
     <header>
@@ -18,21 +18,23 @@ const Header = () => {
               <a>About</a>
             </Link>
           </li>
-          {user ? (
-            <>
+          {!loading && (
+            user ? (
+              <>
+                <li>
+                  <Link href='/profile'>
+                    <a>Profile</a>
+                  </Link>
+                </li>
+                <li>
+                  <a href='/api/logout'>Logout</a>
+                </li>
+              </>
+            ) : (
               <li>
-                <Link href='/profile'>
-                  <a>Profile</a>
-                </Link>
+                <a href='/api/login'>Login</a>
               </li>
-              <li>
-                <a href='/api/logout'>Logout</a>
-              </li>
-            </>
-          ) : (
-            <li>
-              <a href='/api/login'>Login</a>
-            </li>
+            )
           )}
         </ul>
       </nav>

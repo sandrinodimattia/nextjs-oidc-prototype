@@ -1,9 +1,9 @@
 import Head from 'next/head';
 import Header from './header';
-import { UserProvider } from '../lib/user';
+import { User } from '../lib/user';
 
 const Layout = ({ user, children }) => (
-  <UserProvider user={user}>
+  <User.Provider value={user}>
     <Head>
       <title>With Auth0</title>
     </Head>
@@ -27,7 +27,7 @@ const Layout = ({ user, children }) => (
         font-family: -apple-system, 'Segoe UI';
       }
     `}</style>
-  </UserProvider>
+  </User.Provider>
 );
 
 export default Layout;
