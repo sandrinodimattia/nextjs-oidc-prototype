@@ -7,7 +7,7 @@ import IOidcSettings from './oidc-settings';
 function createLogoutUrl(settings: IOidcSettings) {
   return `https://${settings.domain}/v2/logout?`
     + `client_id=${settings.clientId}`
-    + `&returnTo=${settings.postLogooutRedirectUri}`;
+    + `&returnTo=${settings.postLogoutRedirectUri}`;
 }
 
 export default function logout(settings: IOidcSettings) {

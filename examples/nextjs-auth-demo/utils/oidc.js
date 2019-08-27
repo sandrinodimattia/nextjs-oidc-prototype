@@ -7,7 +7,7 @@ module.exports = NextOidc({
   scope: 'openid profile',
   domain: 'sandrino-nextjs.auth0.com',
   redirectUri: 'http://localhost:3000/callback',
-  postLogooutRedirectUri: 'http://localhost:3000/',
+  postLogoutRedirectUri: 'http://localhost:3000/',
   session: {
     cookieSecret: 'viloxyf_z2GW6K4CT-KQD_MoLEA2wqv5jWuq4Jd0P7ymgG5GJGMpvMneXZzhK3sL'
   }

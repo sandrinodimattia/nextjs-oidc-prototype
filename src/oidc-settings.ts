@@ -3,7 +3,7 @@ export default interface IOidcSettings {
   clientId: string;
   clientSecret: string;
   redirectUri: string;
-  postLogooutRedirectUri: string;
+  postLogoutRedirectUri: string;
   scope: string;
   audience?: string;
   session: IOidcSessionSettings;
