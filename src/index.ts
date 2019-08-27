@@ -1,5 +1,5 @@
+import { IncomingMessage } from 'http';
 import Iron from '@hapi/iron';
-import { NextApiRequest } from 'next'
 import { parseCookies } from './cookies';
 import Login from './login';
 import Logout from './logout';
@@ -19,7 +19,7 @@ export default function (settings: IOidcSettings) {
     handleLogin: Login(clientProvider, settings),
     handleLogout: Logout(settings),
     handleCallback: Callback(clientProvider, settings),
-    getSession: async (req: NextApiRequest) => {
+    getSession: async (req: IncomingMessage) => {
       if (!req) {
         throw new Error('A request is required');
       }
@@ -30,7 +30,7 @@ export default function (settings: IOidcSettings) {
         return null;
       }
 
-      const unsealed = await Iron.unseal(req.cookies['oidc:session'], settings.session.cookieSecret, Iron.defaults);
+      const unsealed = await Iron.unseal(cookies['oidc:session'], settings.session.cookieSecret, Iron.defaults);
       return unsealed;
     }
   }
