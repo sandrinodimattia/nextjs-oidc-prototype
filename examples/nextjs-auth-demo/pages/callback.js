@@ -5,7 +5,7 @@ import { handleCallback } from '../utils/oidc';
 export default class Callback extends Component {
   static async getInitialProps ({ req, res }) {
     if (res) {
-      await handleCallback(req, res);
+      await handleCallback(req, res, { redirectTo: '/' });
     }
   }
 

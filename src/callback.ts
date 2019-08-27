@@ -6,8 +6,12 @@ import { parseCookies } from './cookies';
 import IOidcSettings from './oidc-settings';
 import { IOidcClientProvider } from './oidc-client-provider';
 
+export type CallbackOptions = {
+  redirectTo?: string
+}
+
 export default function callback(clientProvider: IOidcClientProvider, settings: IOidcSettings) {
-  return async (req: IncomingMessage, res: ServerResponse) => {
+  return async (req: IncomingMessage, res: ServerResponse, options?: CallbackOptions) => {
     if (!res) {
       throw new Error('Response is not available');
     }
@@ -51,8 +55,9 @@ export default function callback(clientProvider: IOidcClientProvider, settings: 
     }))
 
     // Redirect to the homepage.
+    const redirectTo = options && options.redirectTo || '/'
     res.writeHead(302, {
-      Location: '/'
+      Location: redirectTo
     });
     res.end();
   }
