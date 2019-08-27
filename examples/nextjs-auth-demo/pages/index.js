@@ -22,7 +22,7 @@ export default class Home extends Component {
       return <div />;
     }
 
-    return <a href={"/login"}>
+    return <a href={"/api/login"}>
       <button>Login</button>
     </a>;
   }
@@ -31,14 +31,11 @@ export default class Home extends Component {
     if (!this.state.session) {
       return <div />;
     }
-    return  <div>
-      <a href={"/logout"}>
+    return (
+      <a href={"/api/logout"}>
         <button>Logout</button>
       </a>
-      <a href={"/api/logout"}>
-        <button>Logout (API Route)</button>
-      </a>
-    </div>;
+    )
   }
 
   renderProfilePage() {
@@ -54,7 +51,7 @@ export default class Home extends Component {
     if (!this.state.session) {
       return <div />;
     }
-  
+
     return <div>
       <h3>Rendered on the client</h3>
       <p>Subject: {this.state.session.sub}</p>

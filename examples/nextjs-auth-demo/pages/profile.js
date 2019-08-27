@@ -8,8 +8,8 @@ export default class Profile extends Component {
       const session = await getSession(req);
       if (!session) {
         res.writeHead(302, {
-          Location: `/login`
-        });      
+          Location: `/api/login`
+        });
         res.end();
         return;
       }

@@ -1,8 +1,8 @@
 import oidc from '../../utils/oidc';
 
-export default async function logout(req, res) {
+export default async function callback(req, res) {
   try {
-    await oidchandleLogout(req, res);
+    await oidc.handleCallback(req, res, { redirectTo: '/' });
   } catch(error) {
     console.error(error)
     res.status(error.status || 400).end(error.message)

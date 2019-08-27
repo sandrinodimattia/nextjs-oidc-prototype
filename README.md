@@ -28,7 +28,7 @@ module.exports = NextOidc({
   clientSecret: 'P8WDmH4XyumzkTCx...',
   scope: 'openid profile',
   domain: 'sandrino-nextjs.auth0.com',
-  redirectUri: 'http://localhost:3000/callback',
+  redirectUri: 'http://localhost:3000/api/callback',
   postLogoutRedirectUri: 'http://localhost:3000/',
   session: {
     cookieSecret: 'viloxyf_z2GW6K4CT-KQD_MoLEA2wqv5jWu...'
@@ -65,10 +65,10 @@ By creating your own page you can implement your own error handlers when the log
 Now create the necessary buttons in your application. Make sure to use `<a>` instead of `<Link>`, you want this to be rendered on the server:
 
 ```js
- <a href={"/login"}>
+ <a href={"/api/login"}>
     <button>Login</button>
   </a>
-  <a href={"/logout"}>
+  <a href={"/api/logout"}>
     <button>Logout</button>
   </a>
 ```
