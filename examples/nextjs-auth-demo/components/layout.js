@@ -1,6 +1,6 @@
-import Head from 'next/head'
-import Header from './header'
-import { UserProvider } from '../lib/user'
+import Head from 'next/head';
+import Header from './header';
+import { UserProvider } from '../lib/user';
 
 const Layout = ({ user, children }) => (
   <UserProvider user={user}>
@@ -11,7 +11,7 @@ const Layout = ({ user, children }) => (
     <Header />
 
     <main>
-      <div className='container'>{children}</div>
+      <div className="container">{children}</div>
     </main>
 
     <style jsx>{`
@@ -24,10 +24,10 @@ const Layout = ({ user, children }) => (
       body {
         margin: 0;
         color: #333;
-        font-family: -apple-system
+        font-family: -apple-system, 'Segoe UI';
       }
     `}</style>
   </UserProvider>
-)
+);
 
-export default Layout
+export default Layout;
