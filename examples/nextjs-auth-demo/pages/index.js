@@ -6,7 +6,7 @@ export default function Home() {
   const { user, loading } = useFetchUser()
 
   return (
-    <Layout user={{ user, loading }}>
+    <Layout user={user} loading={loading}>
       <h1>Auth0 example</h1>
 
       {loading && (
