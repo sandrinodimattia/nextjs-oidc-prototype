@@ -1,7 +1,6 @@
-import Iron from '@hapi/iron';
-import { parseCookies } from 'nookies';
 import { IncomingMessage } from 'http';
-
+import Iron from '@hapi/iron';
+import { parseCookies } from './cookies';
 import Login from './login';
 import Logout from './logout';
 import Callback from './callback';
@@ -20,12 +19,13 @@ export default function (settings: IOidcSettings) {
     handleLogin: Login(clientProvider, settings),
     handleLogout: Logout(settings),
     handleCallback: Callback(clientProvider, settings),
-    getSession: async (req: IncomingMessage): Promise<any> => {
-      const ctx: any = {
-        req
-      };
+    getSession: async (req: IncomingMessage) => {
+      if (!req) {
+        throw new Error('A request is required');
+      }
 
-      const cookies = parseCookies(ctx);
+      const cookies = parseCookies(req);
+
       if (!cookies['oidc:session']) {
         return null;
       }

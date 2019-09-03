@@ -29,12 +29,12 @@ module.exports = NextOidc({
   scope: 'openid profile',
   domain: 'sandrino-nextjs.auth0.com',
   redirectUri: 'http://localhost:3000/callback',
-  postLogooutRedirectUri: 'http://localhost:3000/',
+  postLogoutRedirectUri: 'http://localhost:3000/',
   session: {
     cookieSecret: 'viloxyf_z2GW6K4CT-KQD_MoLEA2wqv5jWu...'
   }
 });
-``` 
+```
 
 Then you create 3 pages under pages which invoke the handlers from the plugin, eg:
 
@@ -58,7 +58,7 @@ export default class Callback extends Component {
     )
   }
 }
-``` 
+```
 
 By creating your own page you can implement your own error handlers when the login fails. That's it.
 
