@@ -1,31 +1,35 @@
+import { fetchUser } from '../lib/user'
+import Layout from '../components/layout'
 
-import React, { Component } from 'react';
-import { getSession } from '../utils/oidc';
+const Profile = ({ user }) => (
+  <Layout user={user}>
+    <h1>Auth0 example</h1>
 
-export default class Profile extends Component {
-  static async getInitialProps ({ req, res }) {
-    if (req) {
-      const session = await getSession(req);
-      if (!session) {
-        res.writeHead(302, {
-          Location: `/login`
-        });      
-        res.end();
-        return;
-      }
+    <div>
+      <h3>Profile (server rendered)</h3>
+      <pre>{JSON.stringify(user.session, null, 2)}</pre>
+    </div>
+  </Layout>
+)
 
-      return {
-        session
-      }
+Profile.getInitialProps = async ({ req, res }) => {
+  if (typeof window === 'undefined') {
+    const oidc = require('../utils/oidc').default
+    const session = await oidc.getSession(req);
+
+    if (!session) {
+      res.writeHead(302, {
+        Location: '/api/login'
+      });
+      res.end();
+      return;
     }
+
+    return { user: { session } }
   }
 
-  render () {
-    return (
-      <div>
-        <h1>Profile (server rendered)</h1>
-        <pre>{JSON.stringify(this.props.session, null, 2)}</pre>
-      </div>
-    )
-  }
+  const user = await fetchUser()
+  return { user }
 }
+
+export default Profile

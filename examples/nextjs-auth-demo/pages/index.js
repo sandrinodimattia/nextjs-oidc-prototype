@@ -1,78 +1,41 @@
+import React from 'react'
+import Layout from '../components/layout'
+import { useFetchUser } from '../lib/user'
 
-import fetch from 'node-fetch';
-import React, { Component } from 'react';
+export default function Home() {
+  const { user, loading } = useFetchUser()
 
-export default class Home extends Component {
-  constructor() {
-    super();
-    this.state = { };
-  }
+  return (
+    <Layout user={user} loading={loading}>
+      <h1>Auth0 example</h1>
 
-  async componentDidMount() {
-    const res = await fetch('/api/me');
-    if (res.ok) {
-      this.setState({
-        session: await res.json()
-      })
-    }
-  }
+      {loading && (
+        <p>
+          Loading login info...
+        </p>
+      )}
 
-  renderLogin() {
-    if (this.state.session) {
-      return <div />;
-    }
+      {!loading && !user && (
+        <>
+          <p>
+            To test the login click in <i>Login</i>
+          </p>
+          <p>
+            Once you have logged in you should be able to click in <i>Profile</i> and{' '}
+            <i>Logout</i>
+          </p>
+        </>
+      )}
 
-    return <a href={"/login"}>
-      <button>Login</button>
-    </a>;
-  }
-
-  renderLogout() {
-    if (!this.state.session) {
-      return <div />;
-    }
-    return  <div>
-      <a href={"/logout"}>
-        <button>Logout</button>
-      </a>
-      <a href={"/api/logout"}>
-        <button>Logout (API Route)</button>
-      </a>
-    </div>;
-  }
-
-  renderProfilePage() {
-    if (!this.state.session) {
-      return <div />;
-    }
-    return  <a href={"/profile"}>
-      <button>Profile Page</button>
-    </a>;
-  }
-
-  renderUser() {
-    if (!this.state.session) {
-      return <div />;
-    }
-  
-    return <div>
-      <h3>Rendered on the client</h3>
-      <p>Subject: {this.state.session.sub}</p>
-      <p>Email: {this.state.session.email}</p>
-      <p>Name: {this.state.session.name}</p>
-      <p>Access Token: {this.state.session.accessToken}</p>
-    </div>
-  }
-
-  render () {
-    return (
-      <div>
-        <p>Hello Next.js</p>
-        {this.renderLogin()}
-        {this.renderLogout()}
-        {this.renderProfilePage()}
-        {this.renderUser()}
-      </div>
-    )
-  }
+      {user && (
+        <>
+          <h4>Rendered user info on the client</h4>
+          <p>Subject: {user.session.sub}</p>
+          <p>Email: {user.session.email}</p>
+          <p>Name: {user.session.name}</p>
+          <p>Access Token: {user.session.accessToken}</p>
+        </>
+      )}
+    </Layout>
+  )
 }
